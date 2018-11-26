@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  你好 世界
   </body>
 </html>
