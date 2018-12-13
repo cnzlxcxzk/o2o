@@ -18,7 +18,7 @@ public class Shop {
     //优先级
     private Integer priority;
     //-1：不可用 0：审核中 1：可用
-    private Integer enableStates;
+    private Integer enableStatus;
     //TODO 忘了什么作用，想起再写
     private Long longitude;
     private Long latitude;
@@ -110,12 +110,12 @@ public class Shop {
         this.priority = priority;
     }
 
-    public Integer getEnableStates() {
-        return enableStates;
+    public Integer getEnableStatus() {
+        return enableStatus;
     }
 
-    public void setEnableStates(Integer enableStates) {
-        this.enableStates = enableStates;
+    public void setEnableStatus(Integer enableStatus) {
+        this.enableStatus = enableStatus;
     }
 
     public Long getLongitude() {
