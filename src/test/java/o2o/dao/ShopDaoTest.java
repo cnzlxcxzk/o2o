@@ -3,6 +3,7 @@ package o2o.dao;
 import o2o.BaseTest;
 import o2o.entity.Area;
 import o2o.entity.Shop;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +14,7 @@ public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
     @Test
+    @Ignore
     public void insertShopTest() {
         Shop shop = new Shop();
         shop.setShopName("测试店名");
@@ -35,6 +37,16 @@ public class ShopDaoTest extends BaseTest {
         shop.setShopImg("/upload");
         int excptedNum = shopDao.insertShop(shop);
         assert excptedNum ==1;
+    }
 
+    @Test
+    public void updateShopTest() {
+        Shop shop = new Shop();
+        shop.setShopId(62l);
+        shop.setCreateTime(LocalDateTime.now());
+        shop.setAdvice("不可用");
+        shop.setEnableStatus(1);
+        int excptedNum = shopDao.updateShop(shop);
+        assert excptedNum ==1;
     }
 }

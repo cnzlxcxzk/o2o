@@ -38,6 +38,7 @@ dependencies {
     compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
     //josn
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.4'
+    compile group: 'org.mybatis', name: 'mybatis-typehandlers-jsr310', version: '1.0.2'
 
 
 

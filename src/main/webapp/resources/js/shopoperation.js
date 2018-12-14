@@ -27,7 +27,7 @@ $(function () {
             shop.shopName = $('#shopname').val();
             shop.shopAddr = $('#address').val();
             shop.phone = $('#phone').val();
-            shop.desc = $('#desc').val();
+            shop.shopDesc = $('#desc').val();
             var shopCategory = {};
             shopCategory.shopCategoryId = $('#shopCategory').find('option:selected').val();
             shop.shopCategory = shopCategory;
@@ -37,9 +37,9 @@ $(function () {
             shop.area = area;
             var formData = new FormData();
 
-
+            var shopImg = $('#shopimg')[0].files[0];
             formData.append("shop",JSON.stringify(shop));
-            formData.append("shopImg",$('#shopimg')[0].files[0]);
+            formData.append("shopImg",shopImg);
 
             var verifycode = $('#verifycode').val();
             if(!verifycode) {
