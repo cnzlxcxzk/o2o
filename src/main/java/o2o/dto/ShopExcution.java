@@ -22,6 +22,9 @@ public class ShopExcution {
     //查询店铺时的列表
     private List<Shop> shopList;
 
+    public ShopExcution() {
+    }
+
     //操作店铺失败时的构造器
     public ShopExcution(ShopStateEnum stateEnum) {
         this.state = stateEnum.getState();

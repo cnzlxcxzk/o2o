@@ -8,13 +8,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ShopDaoTest extends BaseTest {
 
     @Autowired
     private ShopDao shopDao;
     @Test
-    @Ignore
     public void insertShopTest() {
         Shop shop = new Shop();
         shop.setShopName("测试店名");
@@ -40,6 +40,7 @@ public class ShopDaoTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void updateShopTest() {
         Shop shop = new Shop();
         shop.setShopId(62l);
@@ -48,5 +49,15 @@ public class ShopDaoTest extends BaseTest {
         shop.setEnableStatus(1);
         int excptedNum = shopDao.updateShop(shop);
         assert excptedNum ==1;
+    }
+
+    @Test
+    @Ignore
+    public void queryShopListTest() {
+        Shop shop = new Shop();
+        shop.setShopName("测试");
+        List<Shop> shops = shopDao.queryShopList(shop,0,3);
+        assert shops.size() == 2;
+        shops.forEach(System.out::println);
     }
 }

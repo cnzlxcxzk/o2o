@@ -22,10 +22,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping(value = "shop")
 public class ShopManagementController {
@@ -114,6 +113,44 @@ public class ShopManagementController {
             model.put("errmsg",e.getMessage());
             return model;
         }
+    }
+    @RequestMapping(value = "shoplist")
+    private String ShopList() {
+        return "shop/shoplist";
+    }
+    @RequestMapping(value = "getshoplist")
+    @ResponseBody
+    private Map<String,Object> getShopList(HttpServletRequest request) {
+        Map<String,Object> model = new HashMap<>();
 
+        int pageIndex = HttpRequestUtil.getInt(request,"page");
+        int pageSize = HttpRequestUtil.getInt(request,"limit");
+        ShopExcution shopExcution;
+        try {
+            //TODO 从session获取userId
+            Shop shop = new Shop();
+            shop.setOwnerId(13L);
+            shopExcution = shopService.getShopList(shop,pageIndex,pageSize);
+            if (shopExcution.getStateInfo() == ShopStateEnum.SUCCESS.getStateInfo()) {
+                model.put("code",0);
+                model.put("message","");
+                model.put("count",1000 );
+                model.put("data",shopExcution.getShopList());
+            }
+            if (shopExcution.getStateInfo() == ShopStateEnum.NULL_SHOP.getStateInfo()) {
+                model.put("code",0);
+                model.put("message","");
+                model.put("count",0);
+                model.put("data",null);
+            }
+            if (shopExcution.getStateInfo() == ShopStateEnum.INNER_ERROR.getStateInfo()) {
+                model.put("code",-1);
+                model.put("message","服务器错误");
+            }
+        }catch (Exception e) {
+            model.put("code",1);
+            model.put("data",e.getMessage());
+        }
+        return model;
     }
 }

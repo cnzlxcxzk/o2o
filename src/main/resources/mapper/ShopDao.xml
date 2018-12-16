@@ -3,6 +3,53 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="o2o.dao.ShopDao">
+
+    <resultMap id="shopMap" type="o2o.entity.Shop">
+        <id property="shopId" column="shop_id"/>
+        <result property="ownerId" column="owner_id"/>
+        <result property="shopCategoryId" column="shop_category_id"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="shopDesc" column="shop_desc"/>
+        <result property="shopAddr" column="shop_addr"/>
+        <result property="phone" column="phone"/>
+        <result property="shopImg" column="shop_img"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="priority" column="priority"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastEditTime" column="last_edit_time"/>
+        <result property="enableStatus" column="enable_status"/>
+        <result property="advice" column="advice"/>
+        <association property="area" column="area_id" javaType="o2o.entity.Area">
+            <id property="areaId" column="area_id"/>
+            <result property="areaName" column="area_name"/>
+            <result property="areaDesc" column="area_desc"/>
+            <result property="priority" column="priority"/>
+            <result property="createTime" column="create_time"/>
+            <result property="lastEditTime" column="last_edit_time"/>
+        </association>
+        <association property="shopCategory" column="shop_category_id" javaType="o2o.entity.ShopCategory">
+            <id property="shopCategoryId" column="shop_category_id"/>
+            <result property="shopCategoryName" column="shop_category_name"/>
+            <result property="shopCategoryDesc" column="shop_category_desc"/>
+            <result property="shopCategoryImg" column="shop_category_img"/>
+            <result property="priority" column="priority"/>
+            <result property="createTime" column="create_time"/>
+            <result property="lastEditTime" column="last_edit_time"/>
+            <result property="parentId" column="parent_id"/>
+        </association>
+        <association property="parentShopCategory" column="parent_category_id" javaType="o2o.entity.ShopCategory">
+            <id property="shopCategoryId" column="shop_category_id"/>
+            <result property="shopCategoryName" column="shop_category_name"/>
+            <result property="shopCategoryDesc" column="shop_category_desc"/>
+            <result property="shopCategoryImg" column="shop_category_img"/>
+            <result property="priority" column="priority"/>
+            <result property="createTime" column="create_time"/>
+            <result property="lastEditTime" column="last_edit_time"/>
+            <result property="parentId" column="parent_id"/>
+        </association>
+    </resultMap>
+
     <insert id="insertShop" useGeneratedKeys="true" keyProperty="shopId" keyColumn="shop_id">
         INSERT INTO
         tb_shop
@@ -36,4 +83,35 @@
         </trim>
         WHERE shop_id=#{shopId}
     </update>
+    <select id="queryShopList" resultMap="shopMap">
+        SELECT *
+        FROM tb_shop
+        <where>
+            <if test="shopCondition.shopId != null">
+                AND shop_id=#{shopCondition.shopId}
+            </if>
+            <if test="shopCondition.shopCategory != null and shopCondition.shopCategory.shopCategoryId != null">
+                AND shop_category_id=#{shopCondition.shopCategoryId}
+            </if>
+            <if test="shopCondition.parentShopCategory != null and shopCondition.parentShopCategory.shopCategoryId != null">
+                AND parent_category_id=#{shopCondition.parentShopCategory.shopCategoryId}
+            </if>
+            <if test="shopCondition.area != null and shopCondition.area.areaId != null">
+                AND area_id=#{shopCondition.area.areaId}
+            </if>
+            <if test="shopCondition.ownerId != null">
+                AND owner_id=#{shopCondition.ownerId}
+            </if>
+            <if test="shopCondition.shopName != null">
+                AND shop_name LIKE CONCAT('%',#{shopCondition.shopName},'%')
+            </if>
+            <if test="shopCondition.enableStatus!=null">
+                AND enable_status = #{shopCondition.enableStatus}
+            </if>
+        </where>
+        ORDER BY
+        priority DESC
+        LIMIT #{pageIndex},#{pageSize};
+
+    </select>
 </mapper>
